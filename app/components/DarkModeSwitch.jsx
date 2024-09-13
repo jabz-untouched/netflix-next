@@ -1,14 +1,41 @@
 "use client";
+
+// DarkModeSwitch.tsx
+
+import React, { Suspense } from "react";
 import { MdLightMode, MdDarkMode } from "react-icons/md";
 import { useTheme } from "next-themes";
-import React, { useEffect, useState } from "react";
 
 export default function DarkModeSwitch() {
   const { theme, setTheme, systemTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
   const currentTheme = theme === "system" ? systemTheme : theme;
-  useEffect(() => setMounted(true), []);
+
+  // No need for useState here; useEffect can handle the mounting logic
+  React.useEffect(() => {
+    // Set the component as mounted
+    setMounted(true);
+  }, []);
+
+  // State to track whether the component is mounted
+  const [mounted, setMounted] = React.useState(false);
+
   return (
-    <div>{mounted && (currentTheme === "dark" ? <MdLightMode onClick={()=> setTheme('light')} className=" text-xl cursor-pointer hover:text-amber-500" /> : <MdDarkMode onClick={()=> setTheme('dark')} className=" text-xl cursor-pointer hover:text-amber-500" />)}</div>
+    <div>
+      {mounted && (
+        <Suspense fallback={<div>Loading...</div>}>
+          {currentTheme === "dark" ? (
+            <MdLightMode
+              onClick={() => setTheme("light")}
+              className="text-xl cursor-pointer hover:text-amber-500"
+            />
+          ) : (
+            <MdDarkMode
+              onClick={() => setTheme("dark")}
+              className="text-xl cursor-pointer hover:text-amber-500"
+            />
+          )}
+        </Suspense>
+      )}
+    </div>
   );
 }
