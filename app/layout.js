@@ -1,5 +1,8 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+// RootLayout.tsx
+
+import React, { Suspense } from "react";
 import Header from "./components/Header";
 import Providers from "./Providers";
 import NavBar from "./components/NavBar";
@@ -20,7 +23,9 @@ export default function RootLayout({ children }) {
           <Header />
           <NavBar />
           <SearchBox />
-          {children}
+          <Suspense fallback={<div>Loading...</div>}>
+            {children}
+          </Suspense>
         </Providers>
       </body>
     </html>
